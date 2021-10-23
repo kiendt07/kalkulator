@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import evaluate from './kalkulator';
 
-function App() {
+const App = () => {
+  const [expression, setExpression] = useState('');
+  const [error, setError] = useState('');
+
+  const handleEvaluate = (expression: string): number => {
+    try {
+      return evaluate(expression);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      return NaN;
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="text" value={expression} onChange={e => setExpression(e.target.value)}/>
+      <div>
+        Result: {expression && handleEvaluate(expression)}
+      </div>
     </div>
   );
 }

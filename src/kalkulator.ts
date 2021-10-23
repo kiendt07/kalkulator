@@ -81,3 +81,5 @@ const tests = [
   { expression: '3.2*2+3', result: 9.4 },
 ];
 tests.forEach((test, i) => console.log(`${i}. ${test.expression}=${evaluate(test.expression)} ${evaluate(test.expression) === test.result ? '✅' : `${'❌ (should be '}${test.result})`}`));
+
+export default evaluate;
