@@ -1,4 +1,5 @@
 ## Features
 [x] Basic expression
-[x] Number with multiple digits
+[x] Integer with multiple digits
+[x] Decimal point
 [ ] Operand rules

@@ -29,7 +29,7 @@ function applyOp(op: string, b: number, a: number): number {
 }
 
 const numberLookAhead = (s: string, i: number): number => {
-  while (s[i+1] >= '0' && s[i+1] <= '9') i++;
+  while (s[i+1] >= '0' && s[i+1] <= '9' || s[i+1] === '.') i++;
   return i;
 }
 
@@ -42,9 +42,9 @@ const evaluate = (s: string): number => {
   let i = 0;
   while (i < s.length) {
     const token = s[i];
-    if (token >= '0' && token <= '9') {
+    if (token >= '0' && token <= '9' || token === '.') {
       const num = s.slice(i, numberLookAhead(s, i) + 1);
-      values.push(parseInt(num));
+      values.push(parseFloat(num));
       i = numberLookAhead(s, i) + 1;
     }
 
@@ -77,5 +77,7 @@ const tests = [
   { expression: '3+6/2*3', result: 12 },
   { expression: '3+6/2*3-1', result: 11 },
   { expression: '0', result: 0 },
+  { expression: '3.2+3', result: 6.2 },
+  { expression: '3.2*2+3', result: 9.4 },
 ]
 tests.forEach((test, i) => console.log(`${i}. ${test.expression}=${evaluate(test.expression)} ${evaluate(test.expression) === test.result ? '✅' : '❌' + ' (should be ' + test.result + ')'}`));
