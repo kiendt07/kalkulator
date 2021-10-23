@@ -72,6 +72,10 @@ const tests = [
   { expression: '3+2', result: 5 },
   { expression: '3+2+4', result: 9 },
   { expression: '3+2*3', result: 9 },
-  { expression: '30+2*3', result: 36}
+  { expression: '30+2*3', result: 36},
+  { expression: '3+6/2', result: 6 },
+  { expression: '3+6/2*3', result: 12 },
+  { expression: '3+6/2*3-1', result: 11 },
+  { expression: '0', result: 0 },
 ]
 tests.forEach((test, i) => console.log(`${i}. ${test.expression}=${evaluate(test.expression)} ${evaluate(test.expression) === test.result ? '✅' : '❌' + ' (should be ' + test.result + ')'}`));
