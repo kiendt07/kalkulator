@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import evaluate from './kalkulator';
+import evaluate, { evaluateTokens } from './kalkulator';
+import tokenize from './services/tokenize';
+import { Token } from './models/token';
 
 const App = () => {
   const [expression, setExpression] = useState('');
@@ -7,11 +9,10 @@ const App = () => {
 
   const handleEvaluate = (expression: string): number => {
     try {
-      return evaluate(expression);
+      const tokens: Token[] = tokenize(expression);
+      console.log({ tokens });
+      return evaluateTokens(tokens);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
       return NaN;
     }
   }
