@@ -35,7 +35,7 @@ const evaluate = (tokens: Token[]): number => {
     if (parsed instanceof Numeric) values.push(parsed);
     if (parsed instanceof Operator) {
       while (ops.length > 0 && hasPrecedence(parsed.token.value, ops[ops.length - 1].token.value)) {
-        const evaluated: number = ops.pop()!.evaluate([values.pop()!, values.pop()!]);
+        const evaluated: number = ops.pop()!.evaluate(values.pop()!, values.pop()!);
         values.push(new Numeric(new Token(evaluated.toString(), 0))); // TODO: use derived
       }
       ops.push(parsed);
@@ -43,7 +43,7 @@ const evaluate = (tokens: Token[]): number => {
   });
 
   while (ops.length > 0) {
-    const evaluated: number = ops.pop()!.evaluate([values.pop()!, values.pop()!]);
+    const evaluated: number = ops.pop()!.evaluate(values.pop()!, values.pop()!);
     values.push(new Numeric(new Token(evaluated.toString(), 0))); // TODO: use derived
   }
 
