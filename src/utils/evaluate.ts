@@ -1,6 +1,7 @@
 import { Token, Tokenizable } from '../models/token';
 import { Plus, Minus, Multiply, Divide, Operator } from "../models/operators";
 import { Numeric } from "../models/operands";
+import tokenize from './tokenize';
 
 function hasPrecedence(op1: string, op2: string): boolean {
   if (op2 === '(' || op2 === ')') {
@@ -22,10 +23,11 @@ const parse = (token: Token): Tokenizable => {
   if (token.value === '*') return new Multiply(token);
   if (token.value === '/') return new Divide(token);
 
-  throw new Error('Cannot parse'); // TODO:
+  throw new Error('Invalid token');
 }
 
-const evaluate = (tokens: Token[]): number => {
+const evaluate = (s: string): number => {
+  const tokens = tokenize(s);
   const ops: Operator[] = [];
   const values: Numeric[] = [];
 
@@ -47,7 +49,7 @@ const evaluate = (tokens: Token[]): number => {
     values.push(new Numeric(new Token(evaluated.toString(), 0))); // TODO: use derived
   }
 
-  return values.pop()!.value;
+  return values.pop()!?.value;
 }
 
 export default evaluate;

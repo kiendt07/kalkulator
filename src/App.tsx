@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import evaluate from './utils/evaluate';
-import tokenize from './utils/tokenize';
-import { Token } from './models/token';
 
 const App = () => {
   const [expression, setExpression] = useState('');
 
   const handleEvaluate = (expression: string): number => {
     try {
-      const tokens: Token[] = tokenize(expression);
-      return evaluate(tokens);
+      return evaluate(expression);
     } catch (err) {
       return NaN;
     }

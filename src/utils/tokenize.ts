@@ -1,11 +1,11 @@
 import { Token } from "../models/token";
 
 const ALLOWED_OPERATORS = ['+', '-', '*', '/'];
+const MAX_TOKEN_LENGTH = 16;
 
 const isNumber = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
 const isOperator = (c: string): boolean => ALLOWED_OPERATORS.includes(c);
 
-// TODO: handling errors
 const tokenize = (s: string): Token[] => {
   const tokens: Token[] = [];
   let i = 0;
@@ -14,6 +14,8 @@ const tokenize = (s: string): Token[] => {
     if (isNumber(s[i])) {
       let j = i;
       while (isNumber(s[j + 1])) j++;
+      
+      if (j - i + 1 > MAX_TOKEN_LENGTH) throw new Error('Max reached');
       tokens.push(new Token(s.slice(i, j + 1), i));
       i = j + 1;
     }
