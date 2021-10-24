@@ -2,7 +2,7 @@ import { Token } from "../models/token";
 
 const ALLOWED_OPERATORS = ['+', '-', '*', '/'];
 
-const isNumber = (c: string): boolean => c >= '0' && c <= '9' || c === '.';
+const isNumber = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
 const isOperator = (c: string): boolean => ALLOWED_OPERATORS.includes(c);
 
 // TODO: handling errors

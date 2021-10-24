@@ -1,4 +1,3 @@
-import { Evaluatable } from './../models';
 import { Token, Tokenizable } from "./token";
 
 export class Numeric extends Tokenizable {

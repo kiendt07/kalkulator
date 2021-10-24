@@ -1,12 +1,7 @@
-import { Token, Tokenizable } from "./token";
+import { Token } from "./token";
 import { Numeric } from "./operands";
 
-export interface Evaluatable {
-  token: Token;
-  evaluate(nums?: Numeric[]): number;
-}
-
-export abstract class Operator implements Evaluatable {
+export abstract class Operator {
   token: Token;
   abstract evaluate(nums?: Numeric[]): number;
 
