@@ -1,4 +1,3 @@
-import { Token } from './../../models/token';
 import tokenize from '../../utils/tokenize';
 
 describe('Tokenize function', () => {
