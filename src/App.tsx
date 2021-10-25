@@ -37,7 +37,6 @@ const App = () => {
       setExpression(`${result}`);
     } catch (err) {
       console.error(err);
-      setExpression('');
     }
   };
   const handleResetClick = () => setExpression('');

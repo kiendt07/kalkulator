@@ -23,7 +23,7 @@ const parse = (token: Token): Numeric | Operator => {
     if (token.value === '/') return new Divide(token);
   }
 
-  throw new SyntaxError(`Unexpected token ${token.value} at position ${token.position}`);
+  throw new SyntaxError(`Unexpected token "${token.value}" at position ${token.position}`);
 }
 
 const evaluate = (s: string): number => {
@@ -36,20 +36,24 @@ const evaluate = (s: string): number => {
 
     if (parsed instanceof Numeric) values.push(parsed);
     if (parsed instanceof Operator) {
-      while (ops.length > 0 && hasPrecedence(parsed.type, ops[ops.length - 1].type)) {
-        const newOperand: number = ops.pop()!.evaluate(values.pop(), values.pop());
-        values.push(new Numeric(newOperand));
+      while (ops.length && hasPrecedence(parsed.type, ops[ops.length - 1].type)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const num: number = ops.pop()!.evaluate(values.pop(), values.pop());
+        values.push(new Numeric(num));
       }
       ops.push(parsed);
     }
   });
 
-  while (ops.length > 0) {
-    const newOperand: number = ops.pop()!.evaluate(values.pop(), values.pop());
-    values.push(new Numeric(newOperand));
+  while (ops.length) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const num: number = ops.pop()!.evaluate(values.pop(), values.pop());
+    values.push(new Numeric(num));
   }
 
-  return values.pop()!?.value;
+  const result = values.pop();
+  if (!result) throw new Error('Expect an operand');
+  return result.value;
 }
 
 export default evaluate;

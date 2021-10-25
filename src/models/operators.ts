@@ -15,11 +15,18 @@ export abstract class Operator extends Tokenizable {
     this.type = type;
   }
 
-  abstract evaluate(...nums: any): number;
+  abstract evaluate(...nums: (Numeric | undefined)[]): number;
+  abstract validate(...nums: (Numeric | undefined)[]): boolean;
 }
 
 export abstract class BinaryOperator extends Operator {
-  abstract evaluate(num1: Numeric, num2: Numeric): number;
+  validate(num1?: Numeric, num2?: Numeric): boolean {
+    if (num1 == null || num2 == null) throw new SyntaxError(
+      `Missing operand for operator "${this.type}" at position ${this.token.position + 1}`
+    );
+
+    return true;
+  }
 }
 
 export class Plus extends BinaryOperator {
@@ -28,6 +35,7 @@ export class Plus extends BinaryOperator {
   }
 
   evaluate(num1: Numeric, num2: Numeric): number {
+    this.validate(num1, num2);
     return num1.value + num2.value;
   }
 }
@@ -38,6 +46,7 @@ export class Minus extends BinaryOperator {
   }
 
   evaluate(num1: Numeric, num2: Numeric): number {
+    this.validate(num1, num2);
     return num2.value - num1.value;
   }
 }
@@ -48,6 +57,7 @@ export class Multiply extends BinaryOperator {
   }
 
   evaluate(num1: Numeric, num2: Numeric): number {
+    this.validate(num1, num2);
     return num1.value * num2.value;
   }
 }
@@ -58,6 +68,8 @@ export class Divide extends BinaryOperator {
   }
 
   evaluate(num1: Numeric, num2: Numeric): number {
+    this.validate(num1, num2);
+    if (num1.value === 0) throw new Error('Cannot divide by zero');
     return num2.value / num1.value;
   }
 }

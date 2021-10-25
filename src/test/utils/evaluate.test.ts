@@ -1,9 +1,8 @@
 import evaluate from '../../utils/evaluate';
-import tokenize from '../../utils/tokenize';
 
 describe('Evaluate an expression', () => {
   it('should return undefined if there\'s no expression', () => {
-    expect(evaluate('')).toBeUndefined;
+    expect(() => evaluate('')).toThrow();
   })
   
   describe('Simple expressions', () => {
@@ -31,6 +30,17 @@ describe('Evaluate an expression', () => {
     test('with decimal point', () => {
       expect(evaluate('3.2')).toEqual(3.2);
       expect(evaluate('7/3')).toEqual(7/3);
+    })
+  })
+
+  describe('Syntax Errors', () => {
+    it('should throw error', () => {
+      expect(() => evaluate('+3')).toThrow(SyntaxError);
+      expect(() => evaluate('**3')).toThrow(SyntaxError);
+      expect(() => evaluate('6+-3')).toThrow(SyntaxError);
+      expect(() => evaluate('-2')).toThrow(SyntaxError);
+      expect(() => evaluate('2..2')).toThrow(SyntaxError);
+      expect(() => evaluate('2.2.2')).toThrow(SyntaxError);
     })
   })
 })
