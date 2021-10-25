@@ -28,10 +28,6 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm test
-    - name: Build
-      run: npm run build
-      env:
-        CI: false
     - name: Deploy
       run: |
         git config --global user.name $user_name
@@ -43,5 +39,6 @@ jobs:
         user_email: 'github-actions[bot]@users.noreply.github.com'
         github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
         repository: ${{ github.repository }}
+        CI: false
 
 
