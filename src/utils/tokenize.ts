@@ -1,8 +1,5 @@
 import { Token } from "../models/token";
-
-const ALLOWED_OPERATORS = ['+', '-', '*', '/'];
-const MAX_TOKEN_LENGTH = 16;
-
+import { ALLOWED_OPERATORS, MAX_TOKEN_LENGTH } from './constants';
 const isNumber = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
 const isOperator = (c: string): boolean => ALLOWED_OPERATORS.includes(c);
 
