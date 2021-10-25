@@ -3,8 +3,8 @@ import { Token, Tokenizable } from "./token";
 export class Numeric extends Tokenizable {
   value: number;
 
-  constructor(token: Token) {
+  constructor(value: number | string, token?: Token) {
     super(token);
-    this.value = parseFloat(token.value); // TODO: throw error
+    this.value = parseFloat(`${value}`); // TODO: throw error
   }
 }

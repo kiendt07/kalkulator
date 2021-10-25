@@ -12,7 +12,7 @@ import { ALLOWED_OPERATORS } from './utils/constants';
 import './App.css';
 
 const btnValues = [
-  ['C', 'DEL', 'HIS', '/'],
+  ['C', 'DEL', 'CHI', '/'],
   ['7', '8', '9', '*'],
   ['4', '5', '6', '-'],
   ['1', '2', '3', '+'],

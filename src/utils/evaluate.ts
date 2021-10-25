@@ -1,7 +1,7 @@
 import { Token, Tokenizable } from '../models/token';
-import { Plus, Minus, Multiply, Divide, Operator } from "../models/operators";
+import { Plus, Minus, Multiply, Divide, Operator, OPERATOR_TYPE } from "../models/operators";
 import { Numeric } from "../models/operands";
-import tokenize from './tokenize';
+import tokenize, { isNumericToken, isOperatorToken } from './tokenize';
 
 function hasPrecedence(op1: string, op2: string): boolean {
   if (op2 === '(' || op2 === ')') {
@@ -14,16 +14,16 @@ function hasPrecedence(op1: string, op2: string): boolean {
   return true;
 }
 
-const isNumeric = (num: any) => (typeof (num) === 'number' || typeof (num) === "string" && num.trim() !== '') && !isNaN(num as number);
+const parse = (token: Token): Numeric | Operator => {
+  if (isNumericToken(token)) return new Numeric(token.value, token);
+  if (isOperatorToken(token)) {
+    if (token.value === '+') return new Plus(token);
+    if (token.value === '-') return new Minus(token);
+    if (token.value === '*') return new Multiply(token);
+    if (token.value === '/') return new Divide(token);
+  }
 
-const parse = (token: Token): Tokenizable => {
-  if (isNumeric(token.value)) return new Numeric(token);
-  if (token.value === '+') return new Plus(token);
-  if (token.value === '-') return new Minus(token);
-  if (token.value === '*') return new Multiply(token);
-  if (token.value === '/') return new Divide(token);
-
-  throw new Error('Invalid token');
+  throw new SyntaxError(`Unexpected token ${token.value} at position ${token.position}`);
 }
 
 const evaluate = (s: string): number => {
@@ -32,21 +32,21 @@ const evaluate = (s: string): number => {
   const values: Numeric[] = [];
 
   tokens.forEach(token => {
-    const parsed: Tokenizable = parse(token)!;
+    const parsed: Numeric | Operator = parse(token);
 
     if (parsed instanceof Numeric) values.push(parsed);
     if (parsed instanceof Operator) {
-      while (ops.length > 0 && hasPrecedence(parsed.token.value, ops[ops.length - 1].token.value)) {
-        const evaluated: number = ops.pop()!.evaluate(values.pop()!, values.pop()!);
-        values.push(new Numeric(new Token(evaluated.toString(), 0))); // TODO: use derived
+      while (ops.length > 0 && hasPrecedence(parsed.type, ops[ops.length - 1].type)) {
+        const newOperand: number = ops.pop()!.evaluate(values.pop(), values.pop());
+        values.push(new Numeric(newOperand));
       }
       ops.push(parsed);
     }
   });
 
   while (ops.length > 0) {
-    const evaluated: number = ops.pop()!.evaluate(values.pop()!, values.pop()!);
-    values.push(new Numeric(new Token(evaluated.toString(), 0))); // TODO: use derived
+    const newOperand: number = ops.pop()!.evaluate(values.pop(), values.pop());
+    values.push(new Numeric(newOperand));
   }
 
   return values.pop()!?.value;

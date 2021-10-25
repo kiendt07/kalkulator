@@ -1,23 +1,27 @@
 import { Token } from "../models/token";
-import { ALLOWED_OPERATORS, MAX_TOKEN_LENGTH } from './constants';
-const isNumber = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
-const isOperator = (c: string): boolean => ALLOWED_OPERATORS.includes(c);
+import { OPERATOR_TYPE } from '../models/operators';
+import { MAX_TOKEN_LENGTH } from './constants';
+
+export const isNumberChar = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
+export const isOperatorChar = (c: string): boolean => Object.values(OPERATOR_TYPE).includes(c as OPERATOR_TYPE);
+export const isNumericToken = (token: Token) => !isNaN(+token.value);
+export const isOperatorToken = (token: Token) => Object.values(OPERATOR_TYPE).includes(token.value as OPERATOR_TYPE)
 
 const tokenize = (s: string): Token[] => {
   const tokens: Token[] = [];
   let i = 0;
 
   while (i < s.length) {
-    if (isNumber(s[i])) {
+    if (isNumberChar(s[i])) {
       let j = i;
-      while (isNumber(s[j + 1])) j++;
+      while (isNumberChar(s[j + 1])) j++;
       
       if (j - i + 1 > MAX_TOKEN_LENGTH) throw new Error('Max reached');
       tokens.push(new Token(s.slice(i, j + 1), i));
       i = j + 1;
     }
     
-    if (isOperator(s[i])) {
+    if (isOperatorChar(s[i])) {
       tokens.push(new Token(s[i], i));
       i += 1;
     }

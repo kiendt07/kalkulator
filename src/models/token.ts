@@ -9,9 +9,9 @@ export class Token {
 }
 
 export class Tokenizable {
-  token: Token;
+  token?: Token;
 
-  constructor(token: Token) {
+  constructor(token?: Token) {
     this.token = token;
   }
 }
