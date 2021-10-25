@@ -1,5 +1,5 @@
-import { Token, Tokenizable } from '../models/token';
-import { Plus, Minus, Multiply, Divide, Operator, OPERATOR_TYPE } from "../models/operators";
+import { Token } from '../models/token';
+import { Plus, Minus, Multiply, Divide, Operator } from "../models/operators";
 import { Numeric } from "../models/operands";
 import tokenize, { isNumericToken, isOperatorToken } from './tokenize';
 

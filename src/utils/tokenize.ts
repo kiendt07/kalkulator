@@ -4,8 +4,8 @@ import { MAX_TOKEN_LENGTH } from './constants';
 
 export const isNumberChar = (c: string): boolean => (c >= '0' && c <= '9') || c === '.';
 export const isOperatorChar = (c: string): boolean => Object.values(OPERATOR_TYPE).includes(c as OPERATOR_TYPE);
-export const isNumericToken = (token: Token) => !isNaN(+token.value);
-export const isOperatorToken = (token: Token) => Object.values(OPERATOR_TYPE).includes(token.value as OPERATOR_TYPE)
+export const isNumericToken = (token: Token): boolean => !isNaN(+token.value);
+export const isOperatorToken = (token: Token): boolean => Object.values(OPERATOR_TYPE).includes(token.value as OPERATOR_TYPE)
 
 const tokenize = (s: string): Token[] => {
   const tokens: Token[] = [];
