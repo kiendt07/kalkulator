@@ -26,11 +26,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: CI=false npm run build --if-present
+    - run: CI=false npm test
     - name: Build
-      run: npm run build
+      run: CI=false npm run build
     - name: Deploy
       run: |
         git config --global user.name $user_name
